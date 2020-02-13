@@ -1,32 +1,78 @@
-Quasar App Extension Title <- change name
-===
+# Quasar GraphQL App Extension
 
-_Be sure to change this readme as appropriate for your app extension._
+## Introduction
 
-_Think about the organization of this file and how the information will be beneficial to the user._
+This app extension adds graphql support to your quasar projects.
 
-> Add a short description of your App Extension. What does it do? How is it beneficial? Why would someone want to use it?
+It uses [Apollo GraphQL](https://www.apollographql.com) and its vue plugin [Vue Apollo](https://apollo.vuejs.org)
 
-# Install
-```bash
-quasar ext add my-ext <- change name
+Server side rendering (SSR) mode is supported by this extension.
+
+Using this extension is the easy way to add GraphQL support, but if you wish to have full control of the graphql integration code, you can opt for a manual setup described here: [github.com/ejez/quasargraphql](https://github.com/ejez/quasargraphql)
+
+## Installation
+
+```sh
+quasar ext add @ejez/graphql
 ```
-Quasar CLI will retrieve it from NPM and install the extension.
+
+Quasar CLI will retrieve the extension from NPM ([@ejez/quasar-app-extension-graphql](https://www.npmjs.com/package/@ejez/quasar-app-extension-graphql))
+
+**Note:** Some code will be added to the html template file of your app (`src/index.template.html`)
 
 ## Prompts
 
-> If your app extension uses prompts, explain them here, otherwise remove this section.
+You will be prompted to enter the URI of your GraphQL endpoint. You can skip this and instead provide the URI using an env variable when running quasar:
 
-# Uninstall
-```bash
-quasar ext remove my-ext <- change name
+```sh
+GRAPHQL_URI=https://prod.example.com/graphql quasar build
+GRAPHQL_URI=https://dev.example.com/graphql quasar dev
 ```
 
-# Info
-> Add longer information here that will help the user of your app extension.
+If you don't have a GraphQL endpoint yet, you can create one at [FakeQL](https://fakeql.com) to experiment with.
 
-# Other Info
-> Add other information that's not as important to know
+## Uninstall
 
-# Donate
-If you appreciate the work that went into this App Extension, please consider [donating to Quasar](https://donate.quasar.dev).
+```sh
+quasar ext remove @ejez/graphql
+```
+
+**Note:** The added code to the html template file (`src/index.template.html`) will be removed.
+
+## Usage
+
+Check the guide in [Vue Apollo docs](https://apollo.vuejs.org/guide/apollo/)
+
+Example usage:
+
+```html
+<template>
+  <div>
+    <!-- when the query response is not received yet, data from it is undefined,
+    so we need to use v-if -->
+    <div v-if="post">
+      GraphQL query result:<br>{{ post.title }}
+    </div>
+    <div v-else>
+      loading...
+    </div>
+  </div>
+</template>
+
+<script>
+import gql from 'graphql-tag'
+
+export default {
+  // https://apollo.vuejs.org/guide/apollo/#usage-in-vue-components
+  apollo: {
+    post: {
+      query: gql`query {
+        post(id: 5) {
+          title
+        }
+      }`
+    }
+  }
+}
+</script>
+```

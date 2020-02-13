@@ -1,6 +1,6 @@
 {
-  "name": "quasar-app-extension-graphql",
-  "version": "0.0.1",
+  "name": "@ejez/quasar-app-extension-graphql",
+  "version": "0.2.2",
   "description": "A Quasar app extension to add GraphQL support",
   "author": "Ejez <ejez@protonmail.ch>",
   "license": "MIT",
@@ -18,5 +18,15 @@
     "node": ">= 8.9.0",
     "npm": ">= 5.6.0",
     "yarn": ">= 1.6.0"
+  },
+  "dependencies": {
+    "apollo-cache-inmemory": "^1.6.5",
+    "apollo-client": "^2.6.8",
+    "apollo-link": "^1.2.13",
+    "apollo-link-http": "^1.5.16",
+    "graphql": "^14.6.0",
+    "graphql-tag": "^2.10.3",
+    "node-fetch": "^2.6.0",
+    "vue-apollo": "^3.0.3"
   }
 }

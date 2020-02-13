@@ -1,11 +1,25 @@
-/**
- * Quasar App Extension index/runner script
- * (runs on each dev/build)
- *
- * Docs: https://quasar.dev/app-extensions/development-guide/index-api
- * API: https://github.com/quasarframework/quasar/blob/master/app/lib/app-extension/IndexAPI.js
- */
+// function that will be used to extend quasar config (quasar.conf.js)
+function extendConf (conf, api) {
+  // select boot file depending on quasar mode
+  // https://quasar.dev/quasar-cli/quasar-conf-js#The-basics
+  const bootFile = api.ctx.mode.ssr ? 'apollo-ssr' : 'apollo'
+
+  // register boot file
+  conf.boot.push(`~@ejez/quasar-app-extension-graphql/src/boot/${bootFile}`)
+
+  // make sure app extension files get transpiled
+  conf.build.transpileDependencies.push(/quasar-app-extension-graphql[\\/]src/)
+
+  // allow overriding of graphql uri using an env variable
+  // https://quasar.dev/quasar-cli/cli-documentation/handling-process-env#Adding-to-process.env
+  conf.build.env.GRAPHQL_URI = JSON.stringify(process.env.GRAPHQL_URI)
+}
 
 module.exports = function (api) {
-  //
+  // quasar compatibility check
+  api.compatibleWith('quasar', '^1.1.1')
+  api.compatibleWith('@quasar/app', '^1.1.0')
+
+  // extend quasar config
+  api.extendQuasarConf(extendConf)
 }
